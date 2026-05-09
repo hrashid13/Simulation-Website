@@ -4,6 +4,12 @@ A web application that simulates the daily operations of an amusement park over 
 
 ---
 
+## Note
+
+The main reason for this project is to make a PRD of an idea for a website, and see how well Claude code can follow it. From there I will build more features off the foundation that Claude creates. 
+
+---
+
 ## Features
 
 - Simulate 1 to 365 days of amusement park operations

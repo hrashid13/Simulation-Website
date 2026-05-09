@@ -1,25 +1,46 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --blue-dark: #1a237e;
-  --blue-mid: #1565c0;
-  --blue-light: #e8eaf6;
-  --blue-accent: #42a5f5;
-  --green: #2e7d32;
-  --orange: #e65100;
-  --text: #212121;
-  --text-muted: #546e7a;
-  --bg: #f5f7fa;
-  --white: #ffffff;
-  --radius: 12px;
-  --shadow: 0 4px 24px rgba(0,0,0,0.10);
+  --pixel-font: 'Press Start 2P', monospace;
+  --body-font: 'VT323', monospace;
+
+  --green-light: #6aaa3a;
+  --green-dark:  #4a8228;
+  --cream:       #f5e6c8;
+  --cream-dark:  #deca9a;
+  --cream-hover: #ecddb5;
+  --brown:       #6b4c11;
+  --brown-dark:  #3d2b00;
+  --text:        #2d1a00;
+  --text-muted:  #7a5c2a;
+
+  --btn-green:   #3aaf3a;
+  --btn-green-d: #2a8a2a;
+  --btn-orange:  #e08a10;
+  --btn-orange-d:#b86e00;
+  --btn-red:     #d43030;
+  --btn-red-d:   #a82020;
+  --btn-blue:    #2e7ab8;
+  --btn-blue-d:  #1a5a90;
+
+  --pixel-border: 3px solid var(--brown);
+  --pixel-shadow: 4px 4px 0px var(--brown-dark);
+  --radius: 4px;
 }
 
 body {
-  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
-  background: var(--bg);
+  font-family: var(--body-font);
+  font-size: 18px;
+  background-color: var(--green-light);
+  background-image:
+    linear-gradient(45deg, var(--green-dark) 25%, transparent 25%),
+    linear-gradient(-45deg, var(--green-dark) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, var(--green-dark) 75%),
+    linear-gradient(-45deg, transparent 75%, var(--green-dark) 75%);
+  background-size: 24px 24px;
+  background-position: 0 0, 0 12px, 12px -12px, -12px 0px;
   color: var(--text);
   min-height: 100vh;
 }
 
-button { cursor: pointer; }
+button { cursor: pointer; font-family: var(--pixel-font); }

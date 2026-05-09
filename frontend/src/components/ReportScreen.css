@@ -1,0 +1,350 @@
+.report-page {
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+/* ---- Header ---- */
+.report-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: linear-gradient(90deg, #1a237e 0%, #1565c0 100%);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+}
+
+.report-header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 10px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.report-header-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.report-header-icon { font-size: 1.3rem; }
+
+.report-nav {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  flex: 1;
+}
+
+.nav-btn {
+  padding: 4px 10px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.3);
+  background: transparent;
+  color: rgba(255,255,255,0.85);
+  font-size: 0.78rem;
+  transition: all 0.15s;
+}
+
+.nav-btn:hover {
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+}
+
+.report-header-actions {
+  display: flex;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.action-btn {
+  padding: 7px 16px;
+  border-radius: 8px;
+  border: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: opacity 0.2s, transform 0.1s;
+}
+
+.action-btn:hover:not(:disabled) { transform: translateY(-1px); }
+.action-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.action-btn--pdf {
+  background: #fff;
+  color: var(--blue-mid);
+}
+
+.action-btn--reset {
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.4);
+}
+
+/* ---- Main ---- */
+.report-main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 24px 64px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* ---- Sections ---- */
+.report-section {
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 28px 28px 24px;
+  scroll-margin-top: 72px;
+}
+
+.section-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--blue-dark);
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--blue-light);
+}
+
+/* ---- KPI Grid ---- */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.kpi-card {
+  background: var(--bg);
+  border-radius: 10px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border: 1.5px solid #e0e0e0;
+}
+
+.kpi-card--highlight {
+  background: var(--blue-light);
+  border-color: #9fa8da;
+}
+
+.kpi-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.kpi-value {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--blue-dark);
+}
+
+/* ---- Day Highlight ---- */
+.day-highlight-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.day-card {
+  border-radius: 10px;
+  border: 1.5px solid #e0e0e0;
+  border-top-width: 4px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.day-card-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.day-card-main {
+  font-size: 0.97rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.day-card-meta {
+  font-size: 0.84rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.day-card-revenue {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--blue-dark);
+  margin-top: 4px;
+}
+
+/* ---- Weather Badge ---- */
+.weather-badge {
+  display: inline-block;
+  padding: 1px 8px;
+  border-radius: 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+/* ---- Chart Grids ---- */
+.chart-grid-1 {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.chart-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+@media (max-width: 760px) {
+  .chart-grid-2 { grid-template-columns: 1fr; }
+  .day-highlight-row { grid-template-columns: 1fr; }
+}
+
+/* ---- Chart Block ---- */
+.chart-block {
+  background: var(--bg);
+  border-radius: 10px;
+  padding: 16px;
+  border: 1px solid #e0e0e0;
+}
+
+.chart-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--blue-dark);
+  margin-bottom: 8px;
+}
+
+.chart-note {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+/* ---- Weather legend (used in trend charts) ---- */
+.weather-legend {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 6px;
+}
+
+.weather-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.weather-legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* ---- Pie legend ---- */
+.pie-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.pie-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.pie-legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  display: inline-block;
+}
+
+/* ---- Tables ---- */
+.table-block {
+  margin-top: 20px;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.data-table th {
+  background: var(--blue-mid);
+  color: #fff;
+  padding: 9px 14px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+.data-table td {
+  padding: 8px 14px;
+  text-align: center;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.data-table tbody tr:nth-child(even) td {
+  background: var(--blue-light);
+}
+
+.table-total td {
+  font-weight: 700;
+  background: #fff !important;
+  border-top: 2px solid var(--blue-mid);
+}
+
+.empty-note {
+  font-size: 0.87rem;
+  color: var(--text-muted);
+  font-style: italic;
+  padding: 8px 0;
+}
+
+/* ---- Tooltip ---- */
+.chart-tooltip {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 10px 14px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+  font-size: 0.83rem;
+  min-width: 130px;
+}
+
+.ct-title { font-weight: 700; color: var(--blue-dark); margin-bottom: 2px; }
+.ct-weather { color: var(--text-muted); font-size: 0.78rem; }
+.ct-value { font-weight: 600; color: var(--text); }

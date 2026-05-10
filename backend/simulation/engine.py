@@ -40,10 +40,20 @@ def _resolve_ticket_mix(ticket_mix: dict, group_size: int) -> dict:
     return tickets
 
 
-def _simulate_day(day_number: int) -> dict:
+def _simulate_day(
+    day_number: int,
+    run_ride_mods: dict,
+    run_store_mods: dict,
+    run_food_scale: float,
+    run_retail_scale: float,
+) -> dict:
     weather = roll_weather()
     attendance, day_of_week = calculate_attendance(day_number, weather["attendance_multiplier"])
     weekday = not is_weekend(day_of_week)
+
+    # Per-day modifiers: each day has its own independent popularity shifts
+    day_ride_mods = {r["name"]: random.uniform(0.75, 1.35) for r in RIDES}
+    day_store_mods = {s["name"]: random.uniform(0.70, 1.40) for s in ALL_STORES}
 
     ride_status = {}
     incidents = []
@@ -94,6 +104,16 @@ def _simulate_day(day_number: int) -> dict:
     store_revenue = {s["name"]: 0.0 for s in ALL_STORES}
     archetype_visitor_counts = {a["name"]: 0 for a in ARCHETYPES}
 
+    # Precompute store weights for the day (run_mod × day_mod × inherent throughput)
+    food_weights = [
+        s["max_hourly_customers"] * run_store_mods[s["name"]] * day_store_mods[s["name"]]
+        for s in FOOD_AND_BEVERAGE
+    ]
+    merch_weights = [
+        s["max_hourly_customers"] * run_store_mods[s["name"]] * day_store_mods[s["name"]]
+        for s in RETAIL_AND_MERCHANDISE
+    ]
+
     for group in groups:
         archetype = group["archetype"]
         size = group["size"]
@@ -114,6 +134,8 @@ def _simulate_day(day_number: int) -> dict:
                 continue
             ride_pool.append(ride["name"])
             base_w = 3.0 if ride["name"] in archetype["ride_preferences"] else 1.0
+            # Apply per-run and per-day modifiers for ride popularity variance
+            base_w *= run_ride_mods[ride["name"]] * day_ride_mods[ride["name"]]
             if ride["name"] == "Aqua Rush":
                 base_w *= aqua_rush_demand_mult
             ride_weights.append(base_w)
@@ -125,19 +147,33 @@ def _simulate_day(day_number: int) -> dict:
                 for chosen in chosen_rides:
                     ride_riders[chosen] += 1
 
-        food_visits = int(size * (hours / 8.0) * 2.0 * archetype["food_spend_multiplier"] * weather["food_spend_multiplier"])
+        # Per-group spending noise (70–130% of expected)
+        group_spend_noise = random.uniform(0.70, 1.30)
+
+        food_visits = int(
+            size * (hours / 8.0) * 2.0
+            * archetype["food_spend_multiplier"]
+            * weather["food_spend_multiplier"]
+            * run_food_scale
+            * group_spend_noise
+        )
         if food_visits > 0:
-            chosen_fb = random.choices(FOOD_AND_BEVERAGE, k=food_visits)
+            chosen_fb = random.choices(FOOD_AND_BEVERAGE, weights=food_weights, k=food_visits)
             for store in chosen_fb:
-                value = max(0.5, random.gauss(store["avg_transaction_value"], store["avg_transaction_value"] * 0.2))
+                value = max(0.5, random.gauss(store["avg_transaction_value"], store["avg_transaction_value"] * 0.25))
                 store_revenue[store["name"]] += value
                 food_revenue += value
 
-        merch_visits = int(size * (hours / 8.0) * 1.0 * archetype["merch_spend_multiplier"])
+        merch_visits = int(
+            size * (hours / 8.0) * 1.0
+            * archetype["merch_spend_multiplier"]
+            * run_retail_scale
+            * group_spend_noise
+        )
         if merch_visits > 0:
-            chosen_merch = random.choices(RETAIL_AND_MERCHANDISE, k=merch_visits)
+            chosen_merch = random.choices(RETAIL_AND_MERCHANDISE, weights=merch_weights, k=merch_visits)
             for store in chosen_merch:
-                value = max(0.5, random.gauss(store["avg_transaction_value"], store["avg_transaction_value"] * 0.2))
+                value = max(0.5, random.gauss(store["avg_transaction_value"], store["avg_transaction_value"] * 0.25))
                 store_revenue[store["name"]] += value
                 retail_revenue += value
 
@@ -171,6 +207,13 @@ def run_simulation(days: int) -> dict:
     daily_data = []
     all_incidents = []
 
+    # Per-run modifiers — generated once, give each run a unique character.
+    # Wide range so different rides/stores can credibly top the leaderboard.
+    run_ride_mods = {r["name"]: random.uniform(0.30, 2.50) for r in RIDES}
+    run_store_mods = {s["name"]: random.uniform(0.35, 2.20) for s in ALL_STORES}
+    run_food_scale = random.uniform(0.65, 1.45)
+    run_retail_scale = random.uniform(0.65, 1.45)
+
     cumulative_ride_riders = {r["name"]: 0 for r in RIDES}
     cumulative_ride_operating_hours = {r["name"]: 0 for r in RIDES}
     cumulative_store_revenue = {s["name"]: 0.0 for s in ALL_STORES}
@@ -183,7 +226,7 @@ def run_simulation(days: int) -> dict:
     }
 
     for day_num in range(1, days + 1):
-        day = _simulate_day(day_num)
+        day = _simulate_day(day_num, run_ride_mods, run_store_mods, run_food_scale, run_retail_scale)
         daily_data.append(day)
         all_incidents.extend(day["incidents"])
 

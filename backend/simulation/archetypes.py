@@ -40,7 +40,7 @@ ARCHETYPES = [
         "group_size_range": (4, 6),
         "ticket_mix": {"adult": "all"},
         "ticket_mix_variable": True,
-        "ride_preferences": ["Thunderbolt", "Free Fall Tower", "Bumper Cars", "Aqua Rush"],
+        "ride_preferences": ["Thunderbolt", "Free Fall Tower", "Haunted Mansion", "Aqua Rush"],
         "ride_aversions": ["Carousel", "Mini Coaster"],
         "food_spend_multiplier": 0.9,
         "merch_spend_multiplier": 1.2,

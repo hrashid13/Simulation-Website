@@ -21,7 +21,7 @@ from reportlab.lib.enums import TA_CENTER, TA_LEFT
 PAGE_W, PAGE_H = letter
 MARGIN = 0.55 * inch
 CONTENT_W = PAGE_W - 2 * MARGIN   # ~525 pt
-CARD_PAD = 10                      # pt, padding inside card
+CARD_PAD = 10                      # pt, inner padding for cream blocks
 INNER_W = CONTENT_W - 2 * CARD_PAD
 HALF_W = (INNER_W - 8) / 2
 
@@ -94,7 +94,7 @@ SUB_STYLE = ParagraphStyle(
 )
 
 # ---------------------------------------------------------------------------
-# Helpers
+# Page background
 # ---------------------------------------------------------------------------
 
 def _page_bg(canvas, doc):
@@ -110,28 +110,51 @@ def _page_bg(canvas, doc):
     canvas.restoreState()
 
 
-def _card(title, inner_table, story):
-    """Wraps a content table in a cream card with a dark-brown pixel header."""
-    card = Table(
-        [[Paragraph(title, H2_STYLE)], [inner_table]],
-        colWidths=[CONTENT_W],
-    )
-    card.setStyle(TableStyle([
-        ("BACKGROUND",    (0, 0), (-1, 0),  BROWN_DARK),
-        ("BACKGROUND",    (0, 1), (-1, -1), CREAM),
+# ---------------------------------------------------------------------------
+# Story building blocks
+#
+# Architecture: flat story — no nesting variable-length tables inside Table
+# cells. ReportLab can only split Tables that are placed directly in the story.
+# ---------------------------------------------------------------------------
+
+def _section_title(title, story):
+    """Dark brown header bar for a section — always a fixed single row."""
+    t = Table([[Paragraph(title, H2_STYLE)]], colWidths=[CONTENT_W])
+    t.setStyle(TableStyle([
+        ("BACKGROUND",    (0, 0), (-1, -1), BROWN_DARK),
         ("BOX",           (0, 0), (-1, -1), 3, BROWN),
-        ("LINEBELOW",     (0, 0), (-1, 0),  2, BROWN),
-        ("TOPPADDING",    (0, 0), (-1, 0),  8),
-        ("BOTTOMPADDING", (0, 0), (-1, 0),  8),
-        ("LEFTPADDING",   (0, 0), (-1, 0),  12),
-        ("TOPPADDING",    (0, 1), (-1, -1), CARD_PAD),
-        ("BOTTOMPADDING", (0, 1), (-1, -1), CARD_PAD),
-        ("LEFTPADDING",   (0, 1), (-1, -1), CARD_PAD),
-        ("RIGHTPADDING",  (0, 0), (-1, -1), CARD_PAD),
+        ("TOPPADDING",    (0, 0), (-1, -1), 8),
+        ("BOTTOMPADDING", (0, 0), (-1, -1), 8),
+        ("LEFTPADDING",   (0, 0), (-1, -1), 12),
+        ("RIGHTPADDING",  (0, 0), (-1, -1), 12),
     ]))
-    story.append(card)
+    story.append(t)
+
+
+def _cream_block(items, story):
+    """Cream-background block for fixed-height content (images, small tables).
+    NEVER put variable-length data tables here — they cannot split when nested."""
+    rows = [[item] for item in items]
+    t = Table(rows, colWidths=[CONTENT_W])
+    t.setStyle(TableStyle([
+        ("BACKGROUND",    (0, 0), (-1, -1), CREAM),
+        ("BOX",           (0, 0), (-1, -1), 3, BROWN),
+        ("TOPPADDING",    (0, 0), (-1, -1), CARD_PAD),
+        ("BOTTOMPADDING", (0, 0), (-1, -1), CARD_PAD),
+        ("LEFTPADDING",   (0, 0), (-1, -1), CARD_PAD),
+        ("RIGHTPADDING",  (0, 0), (-1, -1), CARD_PAD),
+        ("VALIGN",        (0, 0), (-1, -1), "TOP"),
+    ]))
+    story.append(t)
+
+
+def _section_end(story):
     story.append(Spacer(1, 14))
 
+
+# ---------------------------------------------------------------------------
+# Data table helper
+# ---------------------------------------------------------------------------
 
 def _data_table(rows, col_widths=None):
     n = len(rows)
@@ -151,7 +174,7 @@ def _data_table(rows, col_widths=None):
     for i in range(1, n):
         bg = CREAM_DARK if i % 2 == 0 else CREAM
         cmds.append(("BACKGROUND", (0, i), (-1, i), bg))
-    t = Table(rows, colWidths=col_widths)
+    t = Table(rows, colWidths=col_widths, repeatRows=1)
     t.setStyle(TableStyle(cmds))
     return t
 
@@ -162,20 +185,6 @@ def _fig(fig, w, h):
     plt.close(fig)
     buf.seek(0)
     return RLImage(buf, width=w * inch, height=h * inch)
-
-
-def _inner(rows, col_widths=None):
-    """Plain table for card content layout — no visible borders, cream bg."""
-    t = Table(rows, colWidths=col_widths)
-    t.setStyle(TableStyle([
-        ("BACKGROUND",    (0, 0), (-1, -1), CREAM),
-        ("TOPPADDING",    (0, 0), (-1, -1), 6),
-        ("BOTTOMPADDING", (0, 0), (-1, -1), 6),
-        ("LEFTPADDING",   (0, 0), (-1, -1), 0),
-        ("RIGHTPADDING",  (0, 0), (-1, -1), 0),
-        ("VALIGN",        (0, 0), (-1, -1), "TOP"),
-    ]))
-    return t
 
 
 def _fmt_money(v): return f"${v:,.2f}"
@@ -226,8 +235,9 @@ def _section_summary(story, data):
         col_widths=[INNER_W / 2, INNER_W / 2],
     )
 
-    content = _inner([[kpi], [highlights], [quick]])
-    _card("Section 1: Executive Summary", content, story)
+    _section_title("Section 1: Executive Summary", story)
+    _cream_block([kpi, highlights, quick], story)
+    _section_end(story)
 
 
 def _section_daily_trends(story, data):
@@ -250,19 +260,18 @@ def _section_daily_trends(story, data):
         ax.spines["right"].set_visible(False)
         return fig
 
-    attendance = [d["attendance"] for d in daily]
-    revenue    = [d["total_revenue"] for d in daily]
-
     img1 = _fig(
-        _line_chart(attendance, "Visitors", "Daily Attendance", "#3d2b00"),
+        _line_chart([d["attendance"] for d in daily], "Visitors", "Daily Attendance", "#3d2b00"),
         CHART_FULL_W, CHART_FULL_H,
     )
     img2 = _fig(
-        _line_chart(revenue, "Revenue ($)", "Daily Total Revenue", "#2e7ab8"),
+        _line_chart([d["total_revenue"] for d in daily], "Revenue ($)", "Daily Total Revenue", "#2e7ab8"),
         CHART_FULL_W, CHART_FULL_H,
     )
-    content = _inner([[img1], [img2]])
-    _card("Section 2: Daily Attendance & Revenue Trends", content, story)
+
+    _section_title("Section 2: Daily Attendance & Revenue Trends", story)
+    _cream_block([img1, img2], story)
+    _section_end(story)
 
 
 def _section_revenue_breakdown(story, data):
@@ -302,8 +311,10 @@ def _section_revenue_breakdown(story, data):
         fontsize=7, facecolor="#f5e6c8", edgecolor="#6b4c11",
     )
     fig.tight_layout()
-    _card("Section 3: Revenue Breakdown",
-          _inner([[_fig(fig, CHART_FULL_W, CHART_HALF_H)]]), story)
+
+    _section_title("Section 3: Revenue Breakdown", story)
+    _cream_block([_fig(fig, CHART_FULL_W, CHART_HALF_H)], story)
+    _section_end(story)
 
 
 def _section_ride_analytics(story, data):
@@ -333,20 +344,23 @@ def _section_ride_analytics(story, data):
     ax2.grid(axis="x", alpha=0.5)
     ax2.spines["top"].set_visible(False); ax2.spines["right"].set_visible(False)
     fig.tight_layout()
-    chart_img = _fig(fig, CHART_FULL_W, CHART_HALF_H)
 
+    _section_title("Section 4: Ride Analytics", story)
+    _cream_block([_fig(fig, CHART_FULL_W, CHART_HALF_H)], story)
+
+    # Incidents placed directly in story — can split across pages freely
     incidents = data["incidents"]
     if incidents:
-        cw = [INNER_W * 0.12, INNER_W * 0.65, INNER_W * 0.23]
+        cw = [CONTENT_W * 0.12, CONTENT_W * 0.65, CONTENT_W * 0.23]
         inc_rows = [["Day", "Ride", "Hours Down"]]
         inc_rows += [[str(i["day"]), i["ride"], str(i["hours_down"])] for i in incidents]
-        inc_table = _data_table(inc_rows, col_widths=cw)
-        content = _inner([[chart_img], [inc_table]])
+        story.append(Spacer(1, 6))
+        story.append(_data_table(inc_rows, col_widths=cw))
     else:
-        content = _inner([[chart_img],
-                          [Paragraph("No breakdown incidents recorded.", SMALL_STYLE)]])
+        story.append(Spacer(1, 6))
+        story.append(Paragraph("No breakdown incidents recorded.", SMALL_STYLE))
 
-    _card("Section 4: Ride Analytics", content, story)
+    _section_end(story)
 
 
 def _section_store_analytics(story, data):
@@ -410,12 +424,13 @@ def _section_store_analytics(story, data):
     fig2.tight_layout()
     daily_img = _fig(fig2, CHART_FULL_W, CHART_FULL_H)
 
-    _card("Section 5: Store & Restaurant Analytics",
-          _inner([[store_img], [daily_img]]), story)
+    _section_title("Section 5: Store & Restaurant Analytics", story)
+    _cream_block([store_img, daily_img], story)
+    _section_end(story)
 
 
 def _section_demographics(story, data):
-    arch = data["summary"]["archetype_totals"]
+    arch   = data["summary"]["archetype_totals"]
     names  = [k for k, v in arch.items() if v > 0]
     values = [arch[k] for k in names]
     daily  = data["daily_data"]
@@ -452,8 +467,9 @@ def _section_demographics(story, data):
     cw = [INNER_W * 0.35, INNER_W * 0.30, INNER_W * 0.35]
     ticket_table = _data_table(ticket_rows, col_widths=cw)
 
-    _card("Section 6: Visitor Demographics",
-          _inner([[chart_img], [ticket_table]]), story)
+    _section_title("Section 6: Visitor Demographics", story)
+    _cream_block([chart_img, ticket_table], story)
+    _section_end(story)
 
 
 def _section_weather(story, data):
@@ -463,20 +479,27 @@ def _section_weather(story, data):
         s = ws.get(state, {"count": 0, "avg_attendance": 0, "avg_revenue": 0.0})
         rows.append([state, str(s["count"]),
                      _fmt_int(int(s["avg_attendance"])), _fmt_money(s["avg_revenue"])])
-    t = _data_table(rows, col_widths=[INNER_W * 0.25] * 4)
-    _card("Section 7: Weather Impact", _inner([[t]]), story)
+
+    _section_title("Section 7: Weather Impact", story)
+    _cream_block([_data_table(rows, col_widths=[INNER_W * 0.25] * 4)], story)
+    _section_end(story)
 
 
 def _section_incidents(story, data):
     incidents = data["incidents"]
+    _section_title("Section 8: Incidents Log", story)
+
     if not incidents:
-        content = _inner([[Paragraph("No incidents were recorded.", SMALL_STYLE)]])
+        _cream_block([Paragraph("No incidents were recorded.", SMALL_STYLE)], story)
     else:
+        # Place directly in story so it can split across pages for large simulations
+        cw = [CONTENT_W * 0.12, CONTENT_W * 0.65, CONTENT_W * 0.23]
         rows = [["Day", "Ride", "Hours Affected"]]
         rows += [[str(i["day"]), i["ride"], str(i["hours_down"])] for i in incidents]
-        cw = [INNER_W * 0.12, INNER_W * 0.65, INNER_W * 0.23]
-        content = _inner([[_data_table(rows, col_widths=cw)]])
-    _card("Section 8: Incidents Log", content, story)
+        story.append(Spacer(1, 4))
+        story.append(_data_table(rows, col_widths=cw))
+
+    _section_end(story)
 
 
 # ---------------------------------------------------------------------------

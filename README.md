@@ -2,11 +2,16 @@
 
 A web application that simulates the daily operations of an amusement park over a user-defined number of days. Enter how many days you want to simulate, hit run, and receive a fully generated analytical report with data visualizations and a downloadable PDF summary. Every run is completely random.
 
+[![Live Demo](https://img.shields.io/badge/Demo-SimWebsite-green)](https://simulation-website-frontend-production.up.railway.app/)
+
 ---
 
 ## Note
 
-The main reason for this project is to make a PRD of an idea for a website, and see how well Claude code can follow it. From there I will build more features off the foundation that Claude creates. 
+There are two main reasons for this project:
+
+1) To make a PRD of an idea for a website, and see how well Claude code can follow it. From there I will build more features off the foundation that Claude creates.
+2) One of the features that I built was the ability to download CSV and SQL files based on your simulation. Thought was instead of endlessly scrolling for clean data to do reports on, why not create a website to do it for you in seconds. 
 
 ---
 

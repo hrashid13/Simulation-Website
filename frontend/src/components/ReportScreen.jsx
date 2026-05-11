@@ -25,26 +25,43 @@ function scrollTo(id) {
 }
 
 export default function ReportScreen({ data, days, onReset }) {
-  const [downloading, setDownloading] = useState(false)
+  const [activeDownload, setActiveDownload] = useState(null) // 'pdf' | 'csv' | 'sql' | null
+  const [exportError, setExportError] = useState(null)
 
-  async function downloadPDF() {
-    setDownloading(true)
+  async function triggerDownload(endpoint, filename, type) {
+    setActiveDownload(type)
+    setExportError(null)
     try {
-      const res = await fetch(`${API_BASE}/report/pdf`, {
+      const res = await fetch(`${API_BASE}${endpoint}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       })
+      if (!res.ok) throw new Error(`Server returned ${res.status}`)
       const blob = await res.blob()
       const url = URL.createObjectURL(blob)
       const a = document.createElement('a')
       a.href = url
-      a.download = `amusement_park_report_${days}days.pdf`
+      a.download = filename
       a.click()
       URL.revokeObjectURL(url)
+    } catch {
+      setExportError('Export failed. Please try again.')
     } finally {
-      setDownloading(false)
+      setActiveDownload(null)
     }
+  }
+
+  const busy = activeDownload !== null
+
+  function downloadPDF() {
+    triggerDownload('/report/pdf', `parksim_report_${days}days.pdf`, 'pdf')
+  }
+  function downloadCSV() {
+    triggerDownload('/export/csv', `parksim_data_${days}days.zip`, 'csv')
+  }
+  function downloadSQL() {
+    triggerDownload('/export/sql', `parksim_data_${days}days.sql`, 'sql')
   }
 
   const { summary, daily_data, ride_stats, store_stats, ticket_stats, incidents } = data
@@ -65,10 +82,19 @@ export default function ReportScreen({ data, days, onReset }) {
             ))}
           </nav>
           <div className="report-header-actions">
-            <button className="action-btn action-btn--pdf" onClick={downloadPDF} disabled={downloading}>
-              {downloading ? 'Generating…' : 'Download PDF'}
-            </button>
-            <button className="action-btn action-btn--reset" onClick={onReset}>
+            <div className="export-btn-group">
+              <button className="action-btn action-btn--pdf" onClick={downloadPDF} disabled={busy}>
+                {activeDownload === 'pdf' ? 'Generating…' : 'PDF'}
+              </button>
+              <button className="action-btn action-btn--csv" onClick={downloadCSV} disabled={busy}>
+                {activeDownload === 'csv' ? 'Building…' : 'CSV'}
+              </button>
+              <button className="action-btn action-btn--sql" onClick={downloadSQL} disabled={busy}>
+                {activeDownload === 'sql' ? 'Building…' : 'SQL'}
+              </button>
+            </div>
+            {exportError && <span className="export-error">{exportError}</span>}
+            <button className="action-btn action-btn--reset" onClick={onReset} disabled={busy}>
               New Simulation
             </button>
           </div>

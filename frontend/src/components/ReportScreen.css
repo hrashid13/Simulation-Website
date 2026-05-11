@@ -70,8 +70,22 @@
 
 .report-header-actions {
   display: flex;
+  align-items: center;
   gap: 8px;
   white-space: nowrap;
+  flex-wrap: wrap;
+}
+
+.export-btn-group {
+  display: flex;
+  gap: 4px;
+}
+
+.export-error {
+  font-family: var(--pixel-font);
+  font-size: 0.38rem;
+  color: var(--btn-red);
+  line-height: 1.8;
 }
 
 .action-btn {
@@ -103,6 +117,28 @@
 
 .action-btn--pdf:hover:not(:disabled) {
   box-shadow: 5px 5px 0px var(--btn-blue-d);
+}
+
+.action-btn--csv {
+  background: var(--btn-green);
+  color: #fff;
+  border: 3px solid var(--btn-green-d);
+  box-shadow: 3px 3px 0px var(--btn-green-d);
+}
+
+.action-btn--csv:hover:not(:disabled) {
+  box-shadow: 5px 5px 0px var(--btn-green-d);
+}
+
+.action-btn--sql {
+  background: #7b3fb5;
+  color: #fff;
+  border: 3px solid #5a2d85;
+  box-shadow: 3px 3px 0px #5a2d85;
+}
+
+.action-btn--sql:hover:not(:disabled) {
+  box-shadow: 5px 5px 0px #5a2d85;
 }
 
 .action-btn--reset {

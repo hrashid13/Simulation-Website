@@ -102,6 +102,7 @@ def _simulate_day(
     retail_revenue = 0.0
     ride_riders = {r["name"]: 0 for r in RIDES}
     store_revenue = {s["name"]: 0.0 for s in ALL_STORES}
+    store_transactions = {s["name"]: 0 for s in ALL_STORES}
     archetype_visitor_counts = {a["name"]: 0 for a in ARCHETYPES}
 
     # Precompute store weights for the day (run_mod × day_mod × inherent throughput)
@@ -162,6 +163,7 @@ def _simulate_day(
             for store in chosen_fb:
                 value = max(0.5, random.gauss(store["avg_transaction_value"], store["avg_transaction_value"] * 0.25))
                 store_revenue[store["name"]] += value
+                store_transactions[store["name"]] += 1
                 food_revenue += value
 
         merch_visits = int(
@@ -175,6 +177,7 @@ def _simulate_day(
             for store in chosen_merch:
                 value = max(0.5, random.gauss(store["avg_transaction_value"], store["avg_transaction_value"] * 0.25))
                 store_revenue[store["name"]] += value
+                store_transactions[store["name"]] += 1
                 retail_revenue += value
 
     for ride in RIDES:
@@ -199,6 +202,7 @@ def _simulate_day(
         "ride_riders": ride_riders,
         "ride_operating_hours": {r["name"]: ride_status[r["name"]]["operating_hours"] for r in RIDES},
         "store_revenue": {k: round(v, 2) for k, v in store_revenue.items()},
+        "store_transactions": store_transactions,
         "incidents": incidents,
     }
 
@@ -263,6 +267,7 @@ def run_simulation(days: int) -> dict:
             "avg_utilization": round(total_riders / total_capacity, 4),
             "breakdown_count": ride_breakdown_counts[ride["name"]],
             "total_breakdown_hours": ride_breakdown_hours[ride["name"]],
+            "max_hourly_capacity": ride["max_hourly_capacity"],
         }
 
     store_stats = {
@@ -314,6 +319,11 @@ def run_simulation(days: int) -> dict:
             "avg_spend_per_visitor": d["avg_spend_per_visitor"],
             "archetype_counts": d["archetype_counts"],
             "ticket_counts": d["ticket_counts"],
+            # Per-day detail needed for CSV/SQL export
+            "ride_riders": d["ride_riders"],
+            "ride_operating_hours": d["ride_operating_hours"],
+            "store_revenue": d["store_revenue"],
+            "store_transactions": d["store_transactions"],
         }
         for d in daily_data
     ]

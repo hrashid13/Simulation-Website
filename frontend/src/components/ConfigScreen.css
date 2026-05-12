@@ -1,176 +1,160 @@
 .config-page {
   min-height: 100vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 32px 16px;
+  background: var(--color-bg);
 }
 
 .config-card {
-  background: var(--cream);
-  border: var(--pixel-border);
-  box-shadow: var(--pixel-shadow);
+  background: var(--color-surface);
+  border: var(--border);
   border-radius: var(--radius);
-  padding: 36px 40px 32px;
-  max-width: 500px;
+  box-shadow: var(--shadow-card);
+  padding: 40px 44px 36px;
+  max-width: 480px;
   width: 100%;
   text-align: center;
 }
 
 .config-icon {
-  font-size: 56px;
-  margin-bottom: 16px;
-  filter: drop-shadow(2px 2px 0px var(--brown));
+  font-size: 52px;
+  margin-bottom: 20px;
+  line-height: 1;
 }
 
 .config-title {
-  font-family: var(--pixel-font);
-  font-size: 0.85rem;
-  color: var(--brown-dark);
-  margin-bottom: 14px;
-  line-height: 1.8;
-  text-shadow: 2px 2px 0px var(--cream-dark);
+  font-family: var(--font-ui);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: 10px;
+  line-height: 1.3;
 }
 
 .config-subtitle {
-  font-family: var(--body-font);
-  font-size: 1.1rem;
-  color: var(--text-muted);
-  margin-bottom: 28px;
-  line-height: 1.5;
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  margin-bottom: 32px;
+  line-height: 1.6;
 }
 
 .config-form {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: 8px;
+  gap: 6px;
 }
 
 .config-label {
-  font-family: var(--pixel-font);
-  font-size: 0.55rem;
-  color: var(--brown);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
   text-align: left;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
   margin-bottom: 2px;
-  line-height: 1.8;
 }
 
 .config-input {
   width: 100%;
-  padding: 10px 16px;
-  font-family: var(--pixel-font);
-  font-size: 0.9rem;
-  background: #fff;
-  border: var(--pixel-border);
-  border-radius: var(--radius);
+  padding: 11px 16px;
+  font-family: var(--font-mono);
+  font-size: 16px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
   outline: none;
   text-align: center;
-  color: var(--text);
-  box-shadow: inset 2px 2px 0px var(--cream-dark);
-  transition: border-color 0.15s;
+  color: var(--color-text-primary);
+  transition: border-color 0.15s, box-shadow 0.15s;
 }
 
 .config-input:focus {
-  border-color: var(--btn-orange);
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(79, 142, 247, 0.18);
 }
 
 .config-input--error {
-  border-color: var(--btn-red);
+  border-color: var(--color-danger);
 }
 
 .config-hint {
-  font-family: var(--body-font);
-  font-size: 1rem;
-  color: var(--text-muted);
+  font-size: 12px;
+  color: var(--color-text-secondary);
   text-align: left;
 }
 
 .config-hint--error {
-  color: var(--btn-red);
+  color: var(--color-danger);
 }
 
 .config-presets {
   display: flex;
   gap: 8px;
   justify-content: center;
-  margin: 8px 0;
+  margin: 10px 0;
   flex-wrap: wrap;
 }
 
 .preset-btn {
-  padding: 6px 14px;
-  border: var(--pixel-border);
-  border-radius: var(--radius);
-  background: var(--cream-dark);
-  font-family: var(--pixel-font);
-  font-size: 0.5rem;
-  color: var(--brown-dark);
-  box-shadow: 2px 2px 0px var(--brown);
-  transition: all 0.1s;
+  padding: 7px 18px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg);
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  transition: all 0.15s;
 }
 
 .preset-btn:hover {
-  background: var(--cream-hover);
-  transform: translate(-1px, -1px);
-  box-shadow: 3px 3px 0px var(--brown);
-}
-
-.preset-btn:active {
-  transform: translate(2px, 2px);
-  box-shadow: none;
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  background: rgba(79, 142, 247, 0.08);
 }
 
 .preset-btn--active {
-  background: var(--btn-orange);
-  border-color: var(--btn-orange-d);
-  color: #fff;
-  box-shadow: 2px 2px 0px var(--btn-orange-d);
+  background: rgba(79, 142, 247, 0.15);
+  border-color: var(--color-accent);
+  color: var(--color-accent);
 }
 
 .run-btn {
-  margin-top: 14px;
-  padding: 14px;
-  background: var(--btn-green);
+  margin-top: 18px;
+  padding: 13px;
+  background: var(--color-accent);
   color: #fff;
-  font-family: var(--pixel-font);
-  font-size: 0.65rem;
-  border: 3px solid var(--btn-green-d);
-  border-radius: var(--radius);
-  box-shadow: 4px 4px 0px var(--btn-green-d);
-  letter-spacing: 0.5px;
-  line-height: 1.8;
-  transition: all 0.1s;
+  font-family: var(--font-ui);
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+  border-radius: var(--radius-sm);
+  letter-spacing: 0.02em;
+  transition: background 0.15s, box-shadow 0.15s;
 }
 
 .run-btn:hover:not(:disabled) {
-  background: #44c244;
-  transform: translate(-2px, -2px);
-  box-shadow: 6px 6px 0px var(--btn-green-d);
-}
-
-.run-btn:active:not(:disabled) {
-  transform: translate(4px, 4px);
-  box-shadow: none;
+  background: var(--color-accent-hover);
+  box-shadow: 0 0 0 3px rgba(79, 142, 247, 0.25);
 }
 
 .run-btn:disabled {
-  background: #999;
-  border-color: #666;
-  box-shadow: 4px 4px 0px #666;
+  opacity: 0.45;
   cursor: not-allowed;
 }
 
 .config-error {
-  margin-top: 16px;
+  margin-top: 18px;
   padding: 12px 16px;
-  background: #ffe8e8;
-  border: 3px solid var(--btn-red);
-  border-radius: var(--radius);
-  box-shadow: 3px 3px 0px var(--btn-red-d);
-  font-family: var(--body-font);
-  font-size: 1rem;
-  color: var(--btn-red-d);
+  background: var(--color-danger-dim);
+  border: 1px solid var(--color-danger);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  color: #fca5a5;
   text-align: left;
 }
 
@@ -179,17 +163,15 @@
   flex-wrap: wrap;
   gap: 8px;
   justify-content: center;
-  margin-top: 24px;
+  margin-top: 28px;
 }
 
 .stat-chip {
-  padding: 5px 12px;
-  background: var(--cream-dark);
-  border: 2px solid var(--brown);
-  border-radius: var(--radius);
-  box-shadow: 2px 2px 0px var(--brown);
-  font-family: var(--pixel-font);
-  font-size: 0.45rem;
-  color: var(--brown-dark);
-  line-height: 1.8;
+  padding: 5px 14px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--color-text-secondary);
 }

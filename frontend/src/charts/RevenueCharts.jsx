@@ -2,7 +2,7 @@ import {
   ResponsiveContainer, PieChart, Pie, Cell, Tooltip,
   BarChart, Bar, XAxis, YAxis, CartesianGrid,
 } from 'recharts'
-import { REV_COLORS, DOW_ORDER, fmtMoneyShort, fmtMoney } from './constants'
+import { REV_COLORS, DOW_ORDER, GRID_COLOR, TICK_STYLE, fmtMoneyShort, fmtMoney } from './constants'
 
 const PIE_LABELS = ['Ticket Revenue', 'Food & Beverage', 'Retail & Merchandise']
 
@@ -78,9 +78,9 @@ export function RevenueDowChart({ dailyData }) {
       <h4 className="chart-title">Avg Revenue by Day of Week</h4>
       <ResponsiveContainer width="100%" height={260}>
         <BarChart data={data} margin={{ top: 8, right: 16, bottom: 0, left: 16 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" vertical={false} />
-          <XAxis dataKey="name" tick={{ fontSize: 11 }} />
-          <YAxis tickFormatter={fmtMoneyShort} tick={{ fontSize: 11 }} width={64} />
+          <CartesianGrid strokeDasharray="3 3" stroke={GRID_COLOR} vertical={false} />
+          <XAxis dataKey="name" tick={TICK_STYLE} />
+          <YAxis tickFormatter={fmtMoneyShort} tick={TICK_STYLE} width={64} />
           <Tooltip formatter={v => fmtMoney(v)} labelFormatter={l => `${l}`} />
           <Bar dataKey="revenue" name="Avg Revenue" radius={[4, 4, 0, 0]} isAnimationActive={false}>
             {data.map((d, i) => (
@@ -89,7 +89,7 @@ export function RevenueDowChart({ dailyData }) {
           </Bar>
         </BarChart>
       </ResponsiveContainer>
-      <div className="chart-note">
+      <div className="chart-note" style={{ marginTop: 8 }}>
         <span style={{ color: REV_COLORS[0] }}>&#9632;</span> Weekday &nbsp;
         <span style={{ color: REV_COLORS[2] }}>&#9632;</span> Weekend
       </div>

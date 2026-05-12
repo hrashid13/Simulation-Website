@@ -2,7 +2,7 @@ import {
   ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid,
   Tooltip, Cell, Legend,
 } from 'recharts'
-import { FB_COLOR, RETAIL_COLOR, DOW_ORDER, fmtMoneyShort, fmtMoney } from './constants'
+import { FB_COLOR, RETAIL_COLOR, DOW_ORDER, GRID_COLOR, TICK_STYLE, fmtMoneyShort, fmtMoney } from './constants'
 
 const shortName = name => name.length > 16 ? name.slice(0, 15) + '…' : name
 
@@ -13,15 +13,15 @@ export function StoreRevenueChart({ storeStats }) {
   return (
     <div className="chart-block">
       <h4 className="chart-title">Total Revenue by Store (ranked)</h4>
-      <div className="chart-note" style={{ marginBottom: 6 }}>
+      <div className="chart-note" style={{ marginBottom: 8 }}>
         <span style={{ color: FB_COLOR }}>&#9632;</span> Food &amp; Beverage &nbsp;
         <span style={{ color: RETAIL_COLOR }}>&#9632;</span> Retail &amp; Merchandise
       </div>
       <ResponsiveContainer width="100%" height={data.length * 40 + 40}>
         <BarChart data={data} layout="vertical" margin={{ top: 4, right: 60, bottom: 4, left: 8 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" horizontal={false} />
-          <XAxis type="number" tickFormatter={fmtMoneyShort} tick={{ fontSize: 11 }} />
-          <YAxis type="category" dataKey="name" tickFormatter={shortName} tick={{ fontSize: 11 }} width={120} />
+          <CartesianGrid strokeDasharray="3 3" stroke={GRID_COLOR} horizontal={false} />
+          <XAxis type="number" tickFormatter={fmtMoneyShort} tick={TICK_STYLE} />
+          <YAxis type="category" dataKey="name" tickFormatter={shortName} tick={TICK_STYLE} width={120} />
           <Tooltip formatter={v => fmtMoney(v)} />
           <Bar dataKey="value" name="Revenue" radius={[0, 4, 4, 0]} isAnimationActive={false}>
             {data.map((d, i) => (
@@ -68,11 +68,11 @@ export function StoreDailyChart({ dailyData }) {
       <h4 className="chart-title">{title}</h4>
       <ResponsiveContainer width="100%" height={260}>
         <BarChart data={chartData} margin={{ top: 8, right: 16, bottom: 0, left: 16 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" vertical={false} />
-          <XAxis dataKey="name" tick={{ fontSize: 11 }} interval={useDow ? 0 : 'preserveStartEnd'} />
-          <YAxis tickFormatter={fmtMoneyShort} tick={{ fontSize: 11 }} width={64} />
+          <CartesianGrid strokeDasharray="3 3" stroke={GRID_COLOR} vertical={false} />
+          <XAxis dataKey="name" tick={TICK_STYLE} interval={useDow ? 0 : 'preserveStartEnd'} />
+          <YAxis tickFormatter={fmtMoneyShort} tick={TICK_STYLE} width={64} />
           <Tooltip formatter={v => fmtMoney(v)} />
-          <Legend iconSize={10} wrapperStyle={{ fontSize: 11 }} />
+          <Legend iconSize={10} wrapperStyle={{ fontSize: 11, color: '#8b90a0' }} />
           <Bar dataKey="fb" name="Food & Bev" fill={FB_COLOR} isAnimationActive={false} />
           <Bar dataKey="retail" name="Retail" fill={RETAIL_COLOR} isAnimationActive={false} />
         </BarChart>

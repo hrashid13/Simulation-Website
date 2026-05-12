@@ -4,28 +4,28 @@
   align-items: center;
   justify-content: center;
   padding: 32px 16px;
+  background: var(--color-bg);
 }
 
 .loading-card {
-  background: var(--cream);
-  border: var(--pixel-border);
-  box-shadow: var(--pixel-shadow);
+  background: var(--color-surface);
+  border: var(--border);
   border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
   padding: 48px 44px;
-  max-width: 420px;
+  max-width: 400px;
   width: 100%;
   text-align: center;
 }
 
 .spinner {
-  width: 56px;
-  height: 56px;
-  border: 5px solid var(--cream-dark);
-  border-top-color: var(--btn-orange);
+  width: 48px;
+  height: 48px;
+  border: 3px solid var(--color-border);
+  border-top-color: var(--color-accent);
   border-radius: 50%;
-  animation: spin 0.8s steps(8) infinite;
+  animation: spin 0.75s linear infinite;
   margin: 0 auto 28px;
-  box-shadow: 0 0 0 2px var(--brown);
 }
 
 @keyframes spin {
@@ -33,19 +33,16 @@
 }
 
 .loading-title {
-  font-family: var(--pixel-font);
-  font-size: 0.65rem;
-  color: var(--brown-dark);
-  margin-bottom: 10px;
-  line-height: 2;
-  text-shadow: 2px 2px 0px var(--cream-dark);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: 8px;
 }
 
 .loading-sub {
-  font-family: var(--body-font);
-  font-size: 1.1rem;
-  color: var(--text-muted);
-  margin-bottom: 24px;
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  margin-bottom: 28px;
 }
 
 .loading-steps {
@@ -53,22 +50,25 @@
   text-align: left;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
 }
 
 .loading-step {
-  font-family: var(--body-font);
-  font-size: 1rem;
-  color: var(--text-muted);
-  padding: 6px 12px;
-  background: var(--cream-dark);
-  border: 2px solid var(--brown);
-  border-radius: var(--radius);
-  box-shadow: 2px 2px 0px var(--brown);
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  padding: 8px 14px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .loading-step::before {
-  content: '> ';
-  color: var(--btn-green);
+  content: '›';
+  color: var(--color-accent);
+  font-size: 16px;
   font-weight: 700;
+  line-height: 1;
 }

@@ -1,11 +1,11 @@
 import {
   ResponsiveContainer, LineChart, Line, XAxis, YAxis,
-  CartesianGrid, Tooltip, Legend,
+  CartesianGrid, Tooltip,
 } from 'recharts'
-import { W_COLORS, fmtNum, fmtMoneyShort } from './constants'
+import { W_COLORS, GRID_COLOR, TICK_STYLE, fmtNum, fmtMoneyShort } from './constants'
 
 function WeatherDot({ cx, cy, payload }) {
-  const color = W_COLORS[payload.weather] || '#90A4AE'
+  const color = W_COLORS[payload.weather] || '#64748b'
   return <circle cx={cx} cy={cy} r={3} fill={color} strokeWidth={0} />
 }
 
@@ -27,7 +27,7 @@ function AttendanceTooltip({ active, payload }) {
   const d = payload[0].payload
   return (
     <div className="chart-tooltip">
-      <p className="ct-title">Day {d.day} &mdash; {d.day_of_week}</p>
+      <p className="ct-title">Day {d.day} — {d.day_of_week}</p>
       <p className="ct-weather">{d.weather}</p>
       <p className="ct-value">{fmtNum(d.attendance)} visitors</p>
     </div>
@@ -39,9 +39,9 @@ function RevenueTooltip({ active, payload }) {
   const d = payload[0].payload
   return (
     <div className="chart-tooltip">
-      <p className="ct-title">Day {d.day} &mdash; {d.day_of_week}</p>
+      <p className="ct-title">Day {d.day} — {d.day_of_week}</p>
       <p className="ct-weather">{d.weather}</p>
-      <p className="ct-value">${fmtNum(d.total_revenue)}</p>
+      <p className="ct-value">{fmtMoneyShort(d.total_revenue)}</p>
     </div>
   )
 }
@@ -56,12 +56,13 @@ export function AttendanceChart({ dailyData }) {
       <WeatherLegend />
       <ResponsiveContainer width="100%" height={260}>
         <LineChart data={dailyData} margin={{ top: 8, right: 16, bottom: 0, left: 8 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
-          <XAxis dataKey="day" tick={{ fontSize: 11 }} interval={xInterval(dailyData)} label={{ value: 'Day', position: 'insideBottomRight', offset: -4, fontSize: 11 }} />
-          <YAxis tickFormatter={fmtNum} tick={{ fontSize: 11 }} width={60} />
+          <CartesianGrid strokeDasharray="3 3" stroke={GRID_COLOR} />
+          <XAxis dataKey="day" tick={TICK_STYLE} interval={xInterval(dailyData)}
+            label={{ value: 'Day', position: 'insideBottomRight', offset: -4, fontSize: 11, fill: '#8b90a0' }} />
+          <YAxis tickFormatter={fmtNum} tick={TICK_STYLE} width={60} />
           <Tooltip content={<AttendanceTooltip />} />
           <Line
-            type="monotone" dataKey="attendance" stroke="#37474F" strokeWidth={1.5}
+            type="monotone" dataKey="attendance" stroke="#8b90a0" strokeWidth={1.5}
             dot={<WeatherDot />} activeDot={{ r: 5 }} isAnimationActive={false}
           />
         </LineChart>
@@ -77,12 +78,13 @@ export function RevenueTrendChart({ dailyData }) {
       <WeatherLegend />
       <ResponsiveContainer width="100%" height={260}>
         <LineChart data={dailyData} margin={{ top: 8, right: 16, bottom: 0, left: 16 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
-          <XAxis dataKey="day" tick={{ fontSize: 11 }} interval={xInterval(dailyData)} label={{ value: 'Day', position: 'insideBottomRight', offset: -4, fontSize: 11 }} />
-          <YAxis tickFormatter={fmtMoneyShort} tick={{ fontSize: 11 }} width={64} />
+          <CartesianGrid strokeDasharray="3 3" stroke={GRID_COLOR} />
+          <XAxis dataKey="day" tick={TICK_STYLE} interval={xInterval(dailyData)}
+            label={{ value: 'Day', position: 'insideBottomRight', offset: -4, fontSize: 11, fill: '#8b90a0' }} />
+          <YAxis tickFormatter={fmtMoneyShort} tick={TICK_STYLE} width={64} />
           <Tooltip content={<RevenueTooltip />} />
           <Line
-            type="monotone" dataKey="total_revenue" stroke="#1B5E20" strokeWidth={1.5}
+            type="monotone" dataKey="total_revenue" stroke="#4f8ef7" strokeWidth={1.5}
             dot={<WeatherDot />} activeDot={{ r: 5 }} isAnimationActive={false}
           />
         </LineChart>

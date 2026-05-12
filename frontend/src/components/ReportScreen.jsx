@@ -24,7 +24,7 @@ function scrollTo(id) {
   document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
 }
 
-export default function ReportScreen({ data, days, onReset }) {
+export default function ReportScreen({ data, days, onReset, onHome }) {
   const [activeDownload, setActiveDownload] = useState(null) // 'pdf' | 'csv' | 'sql' | null
   const [exportError, setExportError] = useState(null)
 
@@ -82,6 +82,11 @@ export default function ReportScreen({ data, days, onReset }) {
             ))}
           </nav>
           <div className="report-header-actions">
+            {onHome && (
+              <button className="action-btn action-btn--home" onClick={onHome}>
+                ← Home
+              </button>
+            )}
             <div className="export-btn-group">
               <button className="action-btn action-btn--pdf" onClick={downloadPDF} disabled={busy}>
                 {activeDownload === 'pdf' ? 'Generating…' : 'PDF'}
@@ -114,8 +119,8 @@ export default function ReportScreen({ data, days, onReset }) {
             <KpiCard label="Top Grossing Store" value={summary.top_grossing_store} />
           </div>
           <div className="day-highlight-row">
-            <DayCard label="Best Day" day={summary.best_day} color="#2E7D32" />
-            <DayCard label="Worst Day" day={summary.worst_day} color="#C62828" />
+            <DayCard label="Best Day" day={summary.best_day} color="#3ecf8e" />
+            <DayCard label="Worst Day" day={summary.worst_day} color="#ef4444" />
           </div>
         </section>
 

@@ -2,7 +2,9 @@ import {
   ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid,
   Tooltip, Cell,
 } from 'recharts'
-import { RIDE_COLOR, fmtNum } from './constants'
+import { RIDE_COLOR, GRID_COLOR, TICK_STYLE, fmtNum } from './constants'
+
+const DANGER = '#ef4444'
 
 function buildRideData(rideStats, key) {
   return Object.entries(rideStats)
@@ -19,11 +21,11 @@ export function RideRidersChart({ rideStats }) {
       <h4 className="chart-title">Total Riders per Ride</h4>
       <ResponsiveContainer width="100%" height={data.length * 44 + 40}>
         <BarChart data={data} layout="vertical" margin={{ top: 4, right: 48, bottom: 4, left: 8 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" horizontal={false} />
-          <XAxis type="number" tickFormatter={fmtNum} tick={{ fontSize: 11 }} />
-          <YAxis type="category" dataKey="name" tickFormatter={shortName} tick={{ fontSize: 11 }} width={110} />
+          <CartesianGrid strokeDasharray="3 3" stroke={GRID_COLOR} horizontal={false} />
+          <XAxis type="number" tickFormatter={fmtNum} tick={TICK_STYLE} />
+          <YAxis type="category" dataKey="name" tickFormatter={shortName} tick={TICK_STYLE} width={110} />
           <Tooltip formatter={v => fmtNum(v)} />
-          <Bar dataKey="value" name="Total Riders" fill={RIDE_COLOR} radius={[0, 4, 4, 0]} isAnimationActive={false}>
+          <Bar dataKey="value" name="Total Riders" radius={[0, 4, 4, 0]} isAnimationActive={false}>
             {data.map((_, i) => <Cell key={i} fill={RIDE_COLOR} />)}
           </Bar>
         </BarChart>
@@ -39,14 +41,17 @@ export function RideUtilizationChart({ rideStats }) {
   return (
     <div className="chart-block">
       <h4 className="chart-title">Avg Queue Utilization (%)</h4>
+      <div className="chart-note" style={{ marginBottom: 8 }}>
+        <span style={{ color: DANGER }}>&#9632;</span> &gt;80% utilization
+      </div>
       <ResponsiveContainer width="100%" height={data.length * 44 + 40}>
         <BarChart data={data} layout="vertical" margin={{ top: 4, right: 48, bottom: 4, left: 8 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" horizontal={false} />
-          <XAxis type="number" tickFormatter={v => `${v}%`} tick={{ fontSize: 11 }} domain={[0, 100]} />
-          <YAxis type="category" dataKey="name" tickFormatter={shortName} tick={{ fontSize: 11 }} width={110} />
+          <CartesianGrid strokeDasharray="3 3" stroke={GRID_COLOR} horizontal={false} />
+          <XAxis type="number" tickFormatter={v => `${v}%`} tick={TICK_STYLE} domain={[0, 100]} />
+          <YAxis type="category" dataKey="name" tickFormatter={shortName} tick={TICK_STYLE} width={110} />
           <Tooltip formatter={v => `${v}%`} />
           <Bar dataKey="value" name="Utilization" radius={[0, 4, 4, 0]} isAnimationActive={false}>
-            {data.map((d, i) => <Cell key={i} fill={d.value > 80 ? '#EF5350' : RIDE_COLOR} />)}
+            {data.map((d, i) => <Cell key={i} fill={d.value > 80 ? DANGER : RIDE_COLOR} />)}
           </Bar>
         </BarChart>
       </ResponsiveContainer>

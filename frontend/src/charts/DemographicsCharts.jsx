@@ -2,7 +2,7 @@ import {
   ResponsiveContainer, PieChart, Pie, Cell, Tooltip,
   LineChart, Line, XAxis, YAxis, CartesianGrid,
 } from 'recharts'
-import { ARCH_COLORS, fmtMoney, fmtMoneyShort } from './constants'
+import { ARCH_COLORS, GRID_COLOR, TICK_STYLE, fmtMoney, fmtMoneyShort } from './constants'
 
 function ArchTooltip({ active, payload }) {
   if (!active || !payload?.[0]) return null
@@ -67,11 +67,13 @@ export function AvgSpendChart({ dailyData }) {
       <h4 className="chart-title">Avg Spend per Visitor per Day</h4>
       <ResponsiveContainer width="100%" height={260}>
         <LineChart data={dailyData} margin={{ top: 8, right: 16, bottom: 0, left: 16 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
-          <XAxis dataKey="day" tick={{ fontSize: 11 }} interval={xInterval} label={{ value: 'Day', position: 'insideBottomRight', offset: -4, fontSize: 11 }} />
-          <YAxis tickFormatter={fmtMoneyShort} tick={{ fontSize: 11 }} width={64} />
+          <CartesianGrid strokeDasharray="3 3" stroke={GRID_COLOR} />
+          <XAxis dataKey="day" tick={TICK_STYLE} interval={xInterval}
+            label={{ value: 'Day', position: 'insideBottomRight', offset: -4, fontSize: 11, fill: '#8b90a0' }} />
+          <YAxis tickFormatter={fmtMoneyShort} tick={TICK_STYLE} width={64} />
           <Tooltip formatter={v => fmtMoney(v)} labelFormatter={l => `Day ${l}`} />
-          <Line type="monotone" dataKey="avg_spend_per_visitor" name="Avg Spend" stroke="#7B1FA2" strokeWidth={1.8} dot={false} activeDot={{ r: 4 }} isAnimationActive={false} />
+          <Line type="monotone" dataKey="avg_spend_per_visitor" name="Avg Spend"
+            stroke="#a78bfa" strokeWidth={1.8} dot={false} activeDot={{ r: 4 }} isAnimationActive={false} />
         </LineChart>
       </ResponsiveContainer>
     </div>

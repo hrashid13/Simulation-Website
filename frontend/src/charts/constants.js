@@ -1,9 +1,15 @@
-export const W_COLORS = { Sunny: '#F9A825', Cloudy: '#90A4AE', Rainy: '#42A5F5' }
-export const REV_COLORS = ['#1565C0', '#2E7D32', '#E65100']
-export const ARCH_COLORS = ['#EF5350', '#42A5F5', '#66BB6A', '#FFA726', '#AB47BC', '#26C6DA']
-export const RIDE_COLOR = '#5C6BC0'
-export const FB_COLOR = '#2E7D32'
-export const RETAIL_COLOR = '#E65100'
+// Colors aligned with the Simuleras design system
+export const W_COLORS = { Sunny: '#f59e0b', Cloudy: '#64748b', Rainy: '#4f8ef7' }
+export const REV_COLORS = ['#4f8ef7', '#3ecf8e', '#f59e0b']   // blue, green, amber
+export const ARCH_COLORS = ['#4f8ef7', '#3ecf8e', '#f59e0b', '#f87171', '#a78bfa', '#34d399']
+export const RIDE_COLOR = '#4f8ef7'
+export const FB_COLOR   = '#3ecf8e'
+export const RETAIL_COLOR = '#f59e0b'
+
+// Shared Recharts axis/grid props for the dark theme
+export const GRID_COLOR  = '#2a2d3a'
+export const TICK_STYLE  = { fontSize: 11, fill: '#8b90a0' }
+
 export const DOW_ORDER = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
 export const fmtMoney = v =>

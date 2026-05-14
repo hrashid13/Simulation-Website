@@ -2,7 +2,7 @@
 
 A web application that simulates operations. Enter how many days you want to simulate, hit run, and receive a fully generated analytical report with data visualizations and a downloadable PDF summary. Every run is completely random.
 
-[![Live Demo](https://img.shields.io/badge/Demo-SimWebsite-green)](https://simulation-website-frontend-production.up.railway.app/)
+[![Live Demo](https://img.shields.io/badge/Demo-SimWebsite-green)](https://simuleras.com/)
 
 ---
 

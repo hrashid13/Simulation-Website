@@ -5,10 +5,12 @@ from pydantic import BaseModel, Field
 import io
 
 from simulation.engine import run_simulation
+from simulation.hospital.engine import run_simulation as run_hospital_simulation
 from report.generator import generate_pdf_report
+from report.hospital_generator import generate_hospital_pdf_report
 from report.exporter import generate_csv_zip, generate_sql
 
-app = FastAPI(title="Amusement Park Simulation API")
+app = FastAPI(title="Simuleras Simulation API")
 
 app.add_middleware(
     CORSMiddleware,
@@ -22,11 +24,43 @@ class SimulationRequest(BaseModel):
     days: int = Field(..., ge=1, le=365, description="Number of days to simulate")
 
 
+class HospitalSimulationRequest(BaseModel):
+    days: int = Field(..., ge=1, le=365, description="Number of days to simulate")
+    force_mass_casualty: bool = Field(
+        False, description="Guarantee at least one mass casualty event in the run"
+    )
+
+
 @app.post("/simulate")
 def simulate(request: SimulationRequest):
     try:
         result = run_simulation(request.days)
         return result
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/simulate/hospital")
+def simulate_hospital(request: HospitalSimulationRequest):
+    try:
+        return run_hospital_simulation(request.days, request.force_mass_casualty)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/report/hospital/pdf")
+def report_hospital_pdf(data: dict = Body(...)):
+    try:
+        days = data.get("summary", {}).get("total_days", 0)
+        pdf_bytes = generate_hospital_pdf_report(data)
+        return Response(
+            content=pdf_bytes,
+            media_type="application/pdf",
+            headers={
+                "Content-Disposition":
+                    f"attachment; filename=hospitalsim_report_{days}days.pdf"
+            },
+        )
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 

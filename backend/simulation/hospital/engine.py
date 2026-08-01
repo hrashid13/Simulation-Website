@@ -380,7 +380,10 @@ def run_simulation(days: int, force_mass_casualty: bool = False) -> dict:
             daily_data.append(summary)
 
             if not hourly_series:
-                row = {"day": day}
+                # Take the day number off the closed summary, which is already
+                # offset for burn-in — using the raw loop counter here left the
+                # occupancy series numbered 22..51 for a 30-day run.
+                row = {"day": summary["day"]}
                 for dept in DEPARTMENTS:
                     row[dept["key"]] = summary["department_occupancy"][dept["key"]]["avg_pct"]
                 occupancy_series.append(row)
@@ -577,7 +580,8 @@ def _close_day(day, event, acc, totals, service_totals) -> dict:
         "readmissions_scheduled": acc["readmissions_scheduled"],
         "mass_casualty_arrivals": acc["mass_casualty_arrivals"],
         "avg_inpatient_census": round(acc["census_sum"] / TICKS_PER_DAY, 1),
-        "esi_counts": dict(acc["esi_counts"]),
+        # Stringified so the payload survives a JSON round-trip unchanged.
+        "esi_counts": {str(k): v for k, v in acc["esi_counts"].items()},
         "archetype_counts": dict(acc["archetype_counts"]),
         "department_encounters": dict(acc["department_encounters"]),
         "department_occupancy": occupancy,
@@ -688,7 +692,7 @@ def _finalize(days, daily_data, totals, esi_totals, archetype_totals,
     esi_stats = {}
     total_triaged = sum(s["count"] for s in esi_totals.values()) or 1
     for level, s in esi_totals.items():
-        esi_stats[level] = {
+        esi_stats[str(level)] = {
             "label": ESI_LEVELS[level]["label"],
             "count": s["count"],
             "share_pct": round(s["count"] / total_triaged * 100, 1),
@@ -790,7 +794,7 @@ def _finalize(days, daily_data, totals, esi_totals, archetype_totals,
                 "diversions": worst_day["diversions"],
             },
             "archetype_totals": archetype_totals,
-            "esi_totals": {level: s["count"] for level, s in esi_totals.items()},
+            "esi_totals": {str(level): s["count"] for level, s in esi_totals.items()},
             "event_summary": event_summary,
             "occupancy_resolution": "hourly" if hourly_series else "daily",
         },

@@ -48,7 +48,10 @@ DEPARTMENTS = [
         "staffed_hours_per_day": 24,
         "name": "Surgery",
         "unit": "operating rooms",
-        "capacity": 8,
+        # Elective lists are compressed into the daytime window, so OR demand
+        # peaks far above its 24-hour average. At 8 rooms with longer cases the
+        # department sat at 93% occupancy with a 9-hour wait for a table.
+        "capacity": 9,
         "staff_ratio": 2,               # surgeon, anaesthesia, scrub team
         "staff_cost_per_hour": 110.00,
         "cost_per_bed_hour": 550.00,    # OR time is the most expensive resource

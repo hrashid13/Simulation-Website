@@ -81,14 +81,14 @@ PATIENT_ARCHETYPES = [
         "weight": 0.10,
         "esi_distribution": {3: 0.55, 4: 0.45},
         "scheduled": True,
-        "arrival_hours": (7, 15),       # booked slots, not random arrivals
+        "arrival_hours": (7, 17),       # booked slots, not random arrivals
         "weekend_multiplier": 0.12,     # elective lists barely run on weekends
         "staff_intensity": 1.20,
         "pathway": [
             # Pre-op holding is folded into the OR block rather than modelled as
             # its own department; it consumes surgical staff either way.
             {"type": "visit", "department": "surgery", "probability": 1.00,
-             "duration_hours": (2.0, 6.0)},
+             "duration_hours": (1.5, 4.5)},
             {"type": "visit", "department": "general_ward", "probability": 0.55,
              "duration_hours": (24.0, 96.0)},
         ],

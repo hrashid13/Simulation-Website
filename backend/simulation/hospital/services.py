@@ -13,6 +13,7 @@ Each service is driven by a different signal:
 SUPPORT_SERVICES = [
     {
         "key": "pharmacy",
+        "operating_hours": 24,
         "name": "Pharmacy",
         "category": "clinical_support",
         "driver": "discharges",
@@ -23,6 +24,7 @@ SUPPORT_SERVICES = [
     },
     {
         "key": "registration",
+        "operating_hours": 24,
         "name": "Billing / Registration",
         "category": "administrative",
         "driver": "encounters",
@@ -33,6 +35,7 @@ SUPPORT_SERVICES = [
     },
     {
         "key": "cafeteria",
+        "operating_hours": 14,
         "name": "Cafeteria",
         "category": "non_clinical",
         "driver": "occupancy",

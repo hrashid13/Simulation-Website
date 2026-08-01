@@ -39,7 +39,7 @@ ESI_LEVELS = {
 PATIENT_ARCHETYPES = [
     {
         "name": "Walk-in / Minor",
-        "weight": 0.30,
+        "weight": 0.33,
         "esi_distribution": {3: 0.15, 4: 0.45, 5: 0.40},
         "scheduled": False,
         "weekend_multiplier": 1.10,     # minor complaints skew to days off
@@ -66,11 +66,11 @@ PATIENT_ARCHETYPES = [
             {"type": "visit", "department": "radiology_lab", "probability": 0.80,
              "duration_hours": (0.5, 2.0)},
             {"type": "branch", "probability": 1.00, "options": [
-                {"weight": 0.45, "department": "icu", "duration_hours": (24.0, 120.0)},
-                {"weight": 0.35, "department": "surgery", "duration_hours": (2.0, 8.0)},
-                {"weight": 0.20, "department": None, "duration_hours": (0.0, 0.0)},
+                {"weight": 0.12, "department": "icu", "duration_hours": (24.0, 120.0)},
+                {"weight": 0.30, "department": "surgery", "duration_hours": (2.0, 8.0)},
+                {"weight": 0.58, "department": None, "duration_hours": (0.0, 0.0)},
             ]},
-            {"type": "visit", "department": "general_ward", "probability": 0.70,
+            {"type": "visit", "department": "general_ward", "probability": 0.55,
              "duration_hours": (24.0, 96.0)},
         ],
         "complication_probability": 0.18,
@@ -78,7 +78,7 @@ PATIENT_ARCHETYPES = [
     },
     {
         "name": "Scheduled Surgery",
-        "weight": 0.16,
+        "weight": 0.10,
         "esi_distribution": {3: 0.55, 4: 0.45},
         "scheduled": True,
         "arrival_hours": (7, 15),       # booked slots, not random arrivals
@@ -89,15 +89,15 @@ PATIENT_ARCHETYPES = [
             # its own department; it consumes surgical staff either way.
             {"type": "visit", "department": "surgery", "probability": 1.00,
              "duration_hours": (2.0, 6.0)},
-            {"type": "visit", "department": "general_ward", "probability": 1.00,
-             "duration_hours": (24.0, 120.0)},
+            {"type": "visit", "department": "general_ward", "probability": 0.55,
+             "duration_hours": (24.0, 96.0)},
         ],
         "complication_probability": 0.08,
         "readmission_probability": 0.07,
     },
     {
         "name": "Chronic Follow-up",
-        "weight": 0.22,
+        "weight": 0.25,
         "esi_distribution": {4: 0.35, 5: 0.65},
         "scheduled": True,
         "arrival_hours": (8, 17),
@@ -130,7 +130,7 @@ PATIENT_ARCHETYPES = [
             ]},
             {"type": "visit", "department": "radiology_lab", "probability": 0.30,
              "duration_hours": (0.5, 1.5)},
-            {"type": "visit", "department": "general_ward", "probability": 0.25,
+            {"type": "visit", "department": "general_ward", "probability": 0.15,
              "duration_hours": (12.0, 72.0)},
         ],
         "complication_probability": 0.06,
@@ -148,8 +148,8 @@ PATIENT_ARCHETYPES = [
              "duration_hours": (2.0, 7.0)},
             {"type": "visit", "department": "radiology_lab", "probability": 0.60,
              "duration_hours": (0.5, 2.0)},
-            {"type": "visit", "department": "general_ward", "probability": 0.85,
-             "duration_hours": (48.0, 168.0)},
+            {"type": "visit", "department": "general_ward", "probability": 0.70,
+             "duration_hours": (48.0, 120.0)},
         ],
         "complication_probability": 0.28,
         "readmission_probability": 0.22,
@@ -167,8 +167,8 @@ ARCHETYPES_BY_NAME = {a["name"]: a for a in PATIENT_ARCHETYPES}
 COMPLICATION_LOS_MULTIPLIER = (1.3, 2.4)
 
 # Chance a complication escalates an inpatient straight to the ICU.
-COMPLICATION_ICU_ESCALATION_PROBABILITY = 0.35
-COMPLICATION_ICU_DURATION_HOURS = (24.0, 96.0)
+COMPLICATION_ICU_ESCALATION_PROBABILITY = 0.18
+COMPLICATION_ICU_DURATION_HOURS = (18.0, 72.0)
 
 # How long after discharge a readmitted patient comes back. Readmissions that
 # would land past the end of the simulation window simply never arrive.

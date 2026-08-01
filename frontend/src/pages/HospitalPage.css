@@ -1,0 +1,27 @@
+.hospital-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-bg);
+}
+
+.hospital-back-bar {
+  width: 100%;
+  padding: 12px 24px;
+  border-bottom: var(--border);
+  background: var(--color-surface);
+}
+
+.hospital-back-btn {
+  background: transparent;
+  border: none;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  padding: 0;
+  transition: color 0.15s;
+}
+
+.hospital-back-btn:hover {
+  color: var(--color-accent);
+}

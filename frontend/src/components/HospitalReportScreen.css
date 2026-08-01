@@ -1,0 +1,509 @@
+.hreport-page {
+  min-height: 100vh;
+  background: var(--color-bg);
+}
+
+/* ---- Header ---- */
+.hreport-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--color-surface);
+  border-bottom: var(--border);
+  box-shadow: var(--shadow-sm);
+}
+
+.hreport-header-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 10px 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.hreport-header-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+}
+
+.hreport-nav {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  flex: 1;
+}
+
+.hnav-btn {
+  padding: 5px 12px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  transition: all 0.15s;
+}
+
+.hnav-btn:hover {
+  background: rgba(79, 142, 247, 0.1);
+  color: var(--color-accent);
+  border-color: rgba(79, 142, 247, 0.25);
+}
+
+.hreport-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  flex-wrap: wrap;
+}
+
+.haction-btn {
+  padding: 7px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid transparent;
+  transition: all 0.15s;
+}
+
+.haction-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.haction-btn--pdf { background: var(--color-accent); color: #fff; }
+.haction-btn--pdf:hover:not(:disabled) { background: var(--color-accent-hover); }
+
+.haction-btn--home {
+  background: transparent;
+  color: var(--color-text-secondary);
+  padding: 7px 10px;
+}
+.haction-btn--home:hover:not(:disabled) { color: var(--color-accent); }
+
+.haction-btn--reset {
+  background: transparent;
+  color: var(--color-text-secondary);
+  border-color: var(--color-border);
+}
+.haction-btn--reset:hover:not(:disabled) {
+  background: var(--color-bg);
+  color: var(--color-text-primary);
+}
+
+.hexport-error { font-size: 12px; color: var(--color-danger); }
+
+/* ---- Main ---- */
+.hreport-main {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 28px 24px 72px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.hreport-section {
+  background: var(--color-surface);
+  border: var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.hsection-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.hsection-note {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+  font-style: italic;
+}
+
+.hmuted { color: var(--color-text-secondary); }
+
+/* ---- KPIs ---- */
+/* Eight KPIs. auto-fit left a 7 + 1 orphan row at desktop width, so the column
+   count is pinned to factors of eight instead. */
+.hkpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+@media (max-width: 1000px) {
+  .hkpi-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 480px) {
+  .hkpi-grid { grid-template-columns: 1fr; }
+}
+
+.hkpi-card {
+  background: var(--color-bg);
+  border: var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.hkpi-card--highlight {
+  border-color: rgba(79, 142, 247, 0.4);
+  background: rgba(79, 142, 247, 0.06);
+}
+
+.hkpi-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.hkpi-value {
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  line-height: 1.2;
+}
+
+/* ---- Day cards ---- */
+.hday-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.hday-card {
+  border: var(--border);
+  border-top-width: 3px;
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  background: var(--color-bg);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.hday-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.hday-main { font-size: 15px; font-weight: 600; color: var(--color-text-primary); }
+.hday-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+.hday-stat { font-size: 1.2rem; font-weight: 500; color: var(--color-text-primary); }
+.hday-sub { font-size: 12px; color: var(--color-text-secondary); }
+
+.hevent-badge {
+  display: inline-block;
+  padding: 2px 9px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #0f1117;
+}
+
+/* ---- Charts ---- */
+.hchart-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.hchart-block,
+.htable-block {
+  background: var(--color-bg);
+  border: var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+}
+
+.hchart-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: 4px;
+}
+
+.hchart-sub {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  line-height: 1.55;
+  margin-bottom: 12px;
+}
+
+.hchart-empty {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  padding: 20px 0;
+  text-align: center;
+}
+
+/* ---- Tooltip ---- */
+.hchart-tooltip {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 9px 11px;
+  box-shadow: var(--shadow-card);
+  font-size: 12px;
+  min-width: 158px;
+}
+
+.hct-title {
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: 3px;
+}
+
+.hct-event { font-size: 11px; font-weight: 600; margin-bottom: 5px; }
+
+.hct-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  color: var(--color-text-secondary);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+.hct-row span:last-child { color: var(--color-text-primary); }
+
+/* ---- Occupancy small multiples ---- */
+.occ-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+  gap: 14px;
+}
+
+.occ-panel {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 10px 10px 4px;
+}
+
+.occ-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.occ-panel-name {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.occ-swatch {
+  width: 9px;
+  height: 9px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.occ-panel-stat { font-size: 12px; color: var(--color-text-secondary); }
+
+/* ---- Heatmap ---- */
+.heatmap-scroll { overflow-x: auto; padding-bottom: 4px; }
+
+.heatmap {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: max-content;
+}
+
+.heatmap-row { display: flex; align-items: center; gap: 10px; }
+
+.heatmap-label {
+  width: 128px;
+  flex-shrink: 0;
+  font-size: 11px;
+  color: var(--color-text-secondary);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.heatmap-cells {
+  display: grid;
+  grid-template-columns: repeat(var(--cols), minmax(4px, 1fr));
+  gap: 2px;
+  flex: 1;
+  min-width: 320px;
+}
+
+.heatmap-cell {
+  height: 20px;
+  border-radius: 2px;
+  transition: outline-color 0.1s;
+  outline: 1px solid transparent;
+}
+
+.heatmap-cell:hover {
+  outline-color: var(--color-text-primary);
+  outline-offset: 1px;
+}
+
+.heatmap-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.heatmap-legend {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.heatmap-legend-step {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.heatmap-legend-label {
+  font-size: 10.5px;
+  color: var(--color-text-secondary);
+  font-family: var(--font-mono);
+  white-space: nowrap;
+}
+
+.heatmap-legend-swatch {
+  width: 14px;
+  height: 10px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.heatmap-readout {
+  font-size: 11px;
+  color: var(--color-text-secondary);
+}
+
+/* ---- Tables ---- */
+.htable-scroll { overflow-x: auto; }
+.htable-scroll--tall { max-height: 420px; overflow-y: auto; }
+
+.hdata-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+  margin-top: 10px;
+}
+
+.hdata-table th {
+  text-align: left;
+  padding: 9px 12px;
+  background: var(--color-surface);
+  color: var(--color-text-secondary);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--color-border);
+  white-space: nowrap;
+  position: sticky;
+  top: 0;
+}
+
+.hdata-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--color-border-subtle);
+  color: var(--color-text-primary);
+  white-space: nowrap;
+}
+
+.hdata-table tbody tr:hover td { background: rgba(255, 255, 255, 0.02); }
+
+.htable-total td {
+  font-weight: 700;
+  border-top: 1px solid var(--color-border);
+  border-bottom: none;
+}
+
+.esi-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #0f1117;
+}
+
+.ok { color: var(--color-success); }
+.warn { color: var(--color-warning); }
+
+@media (max-width: 860px) {
+  .hchart-grid-2 { grid-template-columns: 1fr; }
+  .hday-row { grid-template-columns: 1fr; }
+}
+
+/* On a narrow screen the section links wrapped to six rows and the sticky
+   header swallowed most of the viewport. Keep them on one scrollable row. */
+@media (max-width: 860px) {
+  .hreport-header-inner {
+    padding: 8px 14px;
+    gap: 8px;
+  }
+
+  .hreport-nav {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    order: 3;
+    flex-basis: 100%;
+  }
+
+  .hreport-nav::-webkit-scrollbar { display: none; }
+
+  .hnav-btn { flex-shrink: 0; white-space: nowrap; }
+
+  .hreport-header-title {
+    flex: 1;
+    font-size: 12px;
+  }
+
+  .hreport-header-actions { flex-wrap: nowrap; }
+
+  .haction-btn { padding: 6px 10px; font-size: 11px; }
+}
+
+@media (max-width: 560px) {
+  .hreport-main { padding: 18px 12px 56px; }
+  .hreport-section { padding: 16px; }
+  .heatmap-label { width: 92px; font-size: 10px; }
+}

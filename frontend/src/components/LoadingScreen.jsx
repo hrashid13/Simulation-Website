@@ -10,7 +10,7 @@ const STEPS = [
   'Building your report...',
 ]
 
-export default function LoadingScreen({ days }) {
+export default function LoadingScreen({ days, steps = STEPS }) {
   return (
     <div className="loading-page">
       <div className="loading-card">
@@ -18,7 +18,7 @@ export default function LoadingScreen({ days }) {
         <h2 className="loading-title">Simulating {days} days...</h2>
         <p className="loading-sub">This usually takes under 10 seconds.</p>
         <ul className="loading-steps">
-          {STEPS.map(step => (
+          {steps.map(step => (
             <li key={step} className="loading-step">{step}</li>
           ))}
         </ul>

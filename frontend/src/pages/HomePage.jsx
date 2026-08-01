@@ -57,12 +57,12 @@ export default function HomePage() {
 
             <SimCard
               title="Hospital"
-              description="Simulate daily hospital operations including patient admissions, department throughput, staffing, and resource utilization."
-              tags={['Admissions', 'Staffing', 'Departments', 'Capacity']}
-              badge="Coming Soon"
-              badgeType="soon"
-              btnLabel="Coming Soon"
-              disabled
+              description="Simulate up to 365 days of hospital operations. Patient arrivals, ESI triage, bed capacity, department queues, staffing, and events, all randomized."
+              tags={['Admissions', 'Triage', 'Departments', 'Capacity']}
+              badge="Live"
+              badgeType="live"
+              btnLabel="Launch Simulation"
+              onAction={() => navigate('/hospital')}
             />
 
             <SimCard

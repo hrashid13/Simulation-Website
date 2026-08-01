@@ -71,7 +71,6 @@ export default function ReportScreen({ data, days, onReset, onHome }) {
       <header className="report-header">
         <div className="report-header-inner">
           <div className="report-header-title">
-            <span className="report-header-icon">🎡</span>
             <span>{days}-Day Simulation Report</span>
           </div>
           <nav className="report-nav">

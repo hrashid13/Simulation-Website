@@ -33,8 +33,6 @@
   white-space: nowrap;
 }
 
-.report-header-icon { font-size: 1.1rem; }
-
 .report-nav {
   display: flex;
   gap: 4px;

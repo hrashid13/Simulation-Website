@@ -15,7 +15,6 @@ export default function ConfigScreen({ onRun, error }) {
   return (
     <div className="config-page">
       <div className="config-card">
-        <div className="config-icon">🎡</div>
         <h1 className="config-title">Amusement Park Simulator</h1>
         <p className="config-subtitle">
           Generate a fully randomized operational report for your park.

@@ -46,7 +46,6 @@ export default function HomePage() {
           <div className="cards-grid">
 
             <SimCard
-              icon="🎢"
               title="Amusement Park"
               description="Simulate up to 365 days of amusement park operations. Rides, weather, visitor archetypes, revenue streams, and incidents, all randomized."
               tags={['Attendance', 'Revenue', 'Rides', 'Weather']}
@@ -57,7 +56,6 @@ export default function HomePage() {
             />
 
             <SimCard
-              icon="🏥"
               title="Hospital"
               description="Simulate daily hospital operations including patient admissions, department throughput, staffing, and resource utilization."
               tags={['Admissions', 'Staffing', 'Departments', 'Capacity']}
@@ -68,7 +66,6 @@ export default function HomePage() {
             />
 
             <SimCard
-              icon="💡"
               title="Suggest a Simulation"
               description="Have an idea for a simulation you'd like to see? Submit it and it might become the next one built."
               tags={['Open to ideas']}

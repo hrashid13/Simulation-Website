@@ -1,16 +1,15 @@
 import './SimCard.css'
 
-export default function SimCard({ icon, title, description, tags, badge, badgeType, btnLabel, onAction, disabled }) {
+export default function SimCard({ title, description, tags, badge, badgeType, btnLabel, onAction, disabled }) {
   return (
     <div className={`sim-card${disabled ? ' sim-card--muted' : ''}`}>
       <div className="sim-card-top">
-        <div className="sim-card-icon">{icon}</div>
+        <h3 className="sim-card-title">{title}</h3>
         {badge && (
           <span className={`sim-badge sim-badge--${badgeType}`}>{badge}</span>
         )}
       </div>
 
-      <h3 className="sim-card-title">{title}</h3>
       <p className="sim-card-desc">{description}</p>
 
       <div className="sim-card-tags">

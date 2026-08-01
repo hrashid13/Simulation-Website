@@ -18,16 +18,12 @@
   opacity: 0.55;
 }
 
-/* ---- Top row: icon + badge ---- */
+/* ---- Top row: title + badge ---- */
 .sim-card-top {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-}
-
-.sim-card-icon {
-  font-size: 36px;
-  line-height: 1;
+  gap: 12px;
 }
 
 /* ---- Status badge ---- */
@@ -37,6 +33,9 @@
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.04em;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-top: 4px;   /* optically centers against the first title line */
 }
 
 .sim-badge--live {
@@ -53,8 +52,10 @@
 
 /* ---- Text ---- */
 .sim-card-title {
-  font-size: 18px;
+  flex: 1;
+  font-size: 22px;
   font-weight: 700;
+  letter-spacing: -0.01em;
   color: var(--color-text-primary);
   line-height: 1.3;
 }

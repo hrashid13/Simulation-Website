@@ -33,11 +33,11 @@ export default function HospitalReportScreen({ data, days, onReset, onHome }) {
   const [downloading, setDownloading] = useState(null)
   const [exportError, setExportError] = useState(null)
 
-  async function downloadPDF() {
-    setDownloading('pdf')
+  async function triggerDownload(endpoint, filename, kind) {
+    setDownloading(kind)
     setExportError(null)
     try {
-      const res = await fetch(`${API_BASE}/report/hospital/pdf`, {
+      const res = await fetch(`${API_BASE}${endpoint}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
@@ -47,7 +47,7 @@ export default function HospitalReportScreen({ data, days, onReset, onHome }) {
       const url = URL.createObjectURL(blob)
       const a = document.createElement('a')
       a.href = url
-      a.download = `hospitalsim_report_${days}days.pdf`
+      a.download = filename
       a.click()
       URL.revokeObjectURL(url)
     } catch {
@@ -56,6 +56,15 @@ export default function HospitalReportScreen({ data, days, onReset, onHome }) {
       setDownloading(null)
     }
   }
+
+  const downloadPDF = () =>
+    triggerDownload('/report/hospital/pdf', `hospitalsim_report_${days}days.pdf`, 'pdf')
+  const downloadCSV = () =>
+    triggerDownload('/export/hospital/csv', `hospitalsim_data_${days}days.zip`, 'csv')
+  const downloadSQL = () =>
+    triggerDownload('/export/hospital/sql', `hospitalsim_data_${days}days.sql`, 'sql')
+
+  const busy = downloading !== null
 
   const {
     summary, daily_data, department_stats, service_stats, esi_stats,
@@ -82,13 +91,23 @@ export default function HospitalReportScreen({ data, days, onReset, onHome }) {
                 Home
               </button>
             )}
-            <button className="haction-btn haction-btn--pdf" onClick={downloadPDF}
-              disabled={downloading !== null}>
-              {downloading === 'pdf' ? 'Generating...' : 'Download PDF'}
-            </button>
+            <div className="hexport-group">
+              <button className="haction-btn haction-btn--pdf" onClick={downloadPDF}
+                disabled={busy}>
+                {downloading === 'pdf' ? 'Generating...' : 'PDF'}
+              </button>
+              <button className="haction-btn haction-btn--csv" onClick={downloadCSV}
+                disabled={busy}>
+                {downloading === 'csv' ? 'Building...' : 'CSV'}
+              </button>
+              <button className="haction-btn haction-btn--sql" onClick={downloadSQL}
+                disabled={busy}>
+                {downloading === 'sql' ? 'Building...' : 'SQL'}
+              </button>
+            </div>
             {exportError && <span className="hexport-error">{exportError}</span>}
             <button className="haction-btn haction-btn--reset" onClick={onReset}
-              disabled={downloading !== null}>
+              disabled={busy}>
               New Simulation
             </button>
           </div>

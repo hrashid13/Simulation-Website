@@ -9,6 +9,7 @@ from simulation.hospital.engine import run_simulation as run_hospital_simulation
 from report.generator import generate_pdf_report
 from report.hospital_generator import generate_hospital_pdf_report
 from report.exporter import generate_csv_zip, generate_sql
+from report.hospital_exporter import generate_hospital_csv_zip, generate_hospital_sql
 
 app = FastAPI(title="Simuleras Simulation API")
 
@@ -59,6 +60,40 @@ def report_hospital_pdf(data: dict = Body(...)):
             headers={
                 "Content-Disposition":
                     f"attachment; filename=hospitalsim_report_{days}days.pdf"
+            },
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/export/hospital/csv")
+def export_hospital_csv(data: dict = Body(...)):
+    try:
+        days = data.get("summary", {}).get("total_days", 0)
+        zip_bytes = generate_hospital_csv_zip(data)
+        return StreamingResponse(
+            io.BytesIO(zip_bytes),
+            media_type="application/zip",
+            headers={
+                "Content-Disposition":
+                    f"attachment; filename=hospitalsim_data_{days}days.zip"
+            },
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/export/hospital/sql")
+def export_hospital_sql(data: dict = Body(...)):
+    try:
+        days = data.get("summary", {}).get("total_days", 0)
+        sql_bytes = generate_hospital_sql(data)
+        return StreamingResponse(
+            io.BytesIO(sql_bytes),
+            media_type="application/sql",
+            headers={
+                "Content-Disposition":
+                    f"attachment; filename=hospitalsim_data_{days}days.sql"
             },
         )
     except Exception as e:

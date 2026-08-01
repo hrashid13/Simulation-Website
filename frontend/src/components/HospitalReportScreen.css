@@ -73,8 +73,24 @@
 
 .haction-btn:disabled { opacity: 0.45; cursor: not-allowed; }
 
+.hexport-group { display: flex; gap: 4px; }
+
 .haction-btn--pdf { background: var(--color-accent); color: #fff; }
 .haction-btn--pdf:hover:not(:disabled) { background: var(--color-accent-hover); }
+
+.haction-btn--csv {
+  background: rgba(62, 207, 142, 0.15);
+  color: var(--color-success);
+  border-color: rgba(62, 207, 142, 0.3);
+}
+.haction-btn--csv:hover:not(:disabled) { background: rgba(62, 207, 142, 0.25); }
+
+.haction-btn--sql {
+  background: rgba(245, 158, 11, 0.12);
+  color: var(--color-warning);
+  border-color: rgba(245, 158, 11, 0.3);
+}
+.haction-btn--sql:hover:not(:disabled) { background: rgba(245, 158, 11, 0.22); }
 
 .haction-btn--home {
   background: transparent;
